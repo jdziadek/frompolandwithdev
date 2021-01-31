@@ -3,11 +3,12 @@ import {
   Alert,
   Box,
   Grid,
+  IconButton,
   Input,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
 import { MoviesContext } from "../contexts";
 import { useSearchQuery } from "../hooks";
@@ -102,6 +103,21 @@ const MoviesPage = () => {
       {isFetching && movies.length > 0 && (
         <SpinnerWithLabel>Searching ...</SpinnerWithLabel>
       )}
+      <IconButton
+        aria-label="Go up"
+        icon={<TriangleUpIcon />}
+        size="lg"
+        pos="fixed"
+        onClick={() =>
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          })
+        }
+        bottom={6}
+        right={6}
+      />
     </>
   );
 };
