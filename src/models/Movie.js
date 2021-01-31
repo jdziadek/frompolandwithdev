@@ -17,7 +17,7 @@ class Movie {
       apikey: process.env.REACT_APP_OMDB_API_KEY,
     };
 
-    const { data } = await axios.get("http://www.omdbapi.com", {
+    const { data } = await axios.get("https://www.omdbapi.com", {
       params: mappedParams,
     });
 
