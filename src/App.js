@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  Heading,
+  Container,
+  Flex,
+  Button,
+  useColorMode,
+} from "@chakra-ui/react";
+
+import MoviesPage from "./pages/Movies";
 
 function App() {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxW="6xl" my={4}>
+      <Flex justifyContent="space-between">
+        <Heading as="h1" size="lg" mb={4}>
+          OMDb
+        </Heading>
+        <Button onClick={toggleColorMode} size="sm">
+          Toggle {colorMode === "light" ? "Dark" : "Light"}
+        </Button>
+      </Flex>
+      <MoviesPage />
+    </Container>
   );
 }
 
