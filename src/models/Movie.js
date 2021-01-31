@@ -40,7 +40,7 @@ class Movie {
   };
 
   getYear() {
-    return this.year || '';
+    return this.year;
   };
 }
 
