@@ -1,25 +1,20 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import {
-  Badge,
   Box,
-  Flex,
   Grid,
-  Heading,
   Input,
   InputGroup,
   InputRightElement,
-  Image,
-  Text,
-  useColorMode,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { MoviesContext } from "../contexts";
 import { useSearchQuery } from "../hooks";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import Movie from "../models/Movie";
+import MovieCard from "../components/molecules/MovieCard";
+import SpinnerWithLabel from "../components/molecules/SpinnerWithLabel";
 
 const MoviesPage = () => {
-  const { colorMode } = useColorMode();
   const [
     { data: movies, isFetching, params, totalResults },
     dispatchMovies,
@@ -81,6 +76,9 @@ const MoviesPage = () => {
           <InputRightElement children={<SearchIcon color="gray.300" />} />
         </InputGroup>
       </Box>
+      {isFetching && movies.length === 0 && (
+        <SpinnerWithLabel>Searching ...</SpinnerWithLabel>
+      )}
       <Grid
         ref={infiniteRef}
         templateColumns={[
@@ -93,33 +91,12 @@ const MoviesPage = () => {
         mb={4}
       >
         {movies.map((movie) => (
-          <Flex
-            bg={colorMode === "light" ? "gray.100" : "gray.900"}
-            shadow="md"
-            borderRadius="sm"
-            overflow="hidden"
-            flexDir="column"
-          >
-            <Flex h={360}>
-              <Image src={movie.getPoster()} objectFit="contain" w="full" />
-            </Flex>
-            <Flex
-              p={3}
-              flex={1}
-              flexDir="column"
-              justifyContent="space-between"
-            >
-              <Heading as="h2" size="sm" mb={2}>
-                {movie.getTitle()}
-              </Heading>
-              <Flex justifyContent="space-between">
-                <Text>{movie.getYear()}</Text>
-                <Badge>{movie.getType()}</Badge>
-              </Flex>
-            </Flex>
-          </Flex>
+          <MovieCard key={movie.id} movie={movie} />
         ))}
       </Grid>
+      {isFetching && movies.length > 0 && (
+        <SpinnerWithLabel>Searching ...</SpinnerWithLabel>
+      )}
     </>
   );
 };

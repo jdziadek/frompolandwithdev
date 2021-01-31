@@ -1,11 +1,11 @@
 export const initMoviesContext = {
   data: [],
+  isFetching: false,
   params: {
     query: "",
     page: 1,
   },
   totalResults: 0,
-  isFetching: false,
 };
 
 export const moviesReducer = (state, { type, payload }) => {
@@ -20,15 +20,16 @@ export const moviesReducer = (state, { type, payload }) => {
     case "setNextPage":
       return {
         ...state,
+        isFetching: true,
         params: {
           ...state.params,
           page: state.params.page + 1,
         },
-        isFetching: true,
       };
     case "setParams":
       return {
         ...initMoviesContext,
+        isFetching: true,
         params: {
           ...state.params,
           ...payload,
