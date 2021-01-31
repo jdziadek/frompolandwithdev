@@ -1,24 +1,15 @@
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
-import qs from "query-string";
 
 export const useDebouncedFunc = () => {
   const func = useRef(debounce((f) => f(), 500));
   return func.current;
 };
 
-export const useSearchQuery = ({ onChangeDebouncedQuery }) => {
-  const [query, setQuery] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+export const useSearchQuery = ({ onChangeDebouncedQuery, defaultQuery }) => {
+  const [query, setQuery] = useState(defaultQuery || "");
+  const [searchQuery, setSearchQuery] = useState(defaultQuery || "");
   const debouncedSetSearchQuery = useDebouncedFunc();
-
-  useEffect(() => {
-    const parsedUrlParams = qs.parse(window.location.search);
-    if (parsedUrlParams.query) {
-      setQuery(parsedUrlParams.query);
-      setSearchQuery(parsedUrlParams.query);
-    }
-  }, []);
 
   useEffect(() => {
     debouncedSetSearchQuery(() => {

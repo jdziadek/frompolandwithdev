@@ -5,6 +5,7 @@ export const initMoviesContext = {
     query: "",
     page: 1,
   },
+  errorMsg: null,
   totalResults: 0,
 };
 
@@ -34,6 +35,12 @@ export const moviesReducer = (state, { type, payload }) => {
           ...state.params,
           ...payload,
         },
+      };
+    case "setError":
+      return {
+        ...state,
+        isFetching: false,
+        errorMsg: payload,
       };
     case "clear":
       return initMoviesContext;

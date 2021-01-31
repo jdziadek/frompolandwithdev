@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import {
+  Alert,
   Box,
   Grid,
   Input,
@@ -7,16 +8,18 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
+
 import { MoviesContext } from "../contexts";
 import { useSearchQuery } from "../hooks";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import Movie from "../models/Movie";
 import MovieCard from "../components/molecules/MovieCard";
 import SpinnerWithLabel from "../components/molecules/SpinnerWithLabel";
+import { getURLParams } from "../utils";
 
 const MoviesPage = () => {
   const [
-    { data: movies, isFetching, params, totalResults },
+    { data: movies, isFetching, params, totalResults, errorMsg },
     dispatchMovies,
   ] = useContext(MoviesContext);
 
@@ -34,6 +37,7 @@ const MoviesPage = () => {
       },
       [dispatchMovies]
     ),
+    defaultQuery: getURLParams().query || "",
   });
 
   const infiniteRef = useInfiniteScroll({
@@ -55,7 +59,7 @@ const MoviesPage = () => {
           },
         });
       } catch (e) {
-        console.log(e);
+        dispatchMovies({ type: "setError", payload: e.message });
       }
     };
 
@@ -76,6 +80,7 @@ const MoviesPage = () => {
           <InputRightElement children={<SearchIcon color="gray.300" />} />
         </InputGroup>
       </Box>
+      {errorMsg && <Alert status="info">{errorMsg}</Alert>}
       {isFetching && movies.length === 0 && (
         <SpinnerWithLabel>Searching ...</SpinnerWithLabel>
       )}
